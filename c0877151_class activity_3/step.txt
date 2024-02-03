@@ -1,0 +1,62 @@
+Step 1:Create the folder name devOps_assignment_3
+
+Step 2:Create a node applictation using : $ node init -y
+
+Step 3:Add express framework using : $ npm install express
+
+Step 4:and Create the file, name it as index.js
+
+Step 5: Step 5:Copy and Paste the below code into index.js 
+
+const express = require('express')
+const app = express()
+const SERVER_PORT = process.env.PORT || 3000;
+app.use(express.static("./views"));
+
+// http://localhost:3000/
+app.get('/C00001', function (req, res) {
+  res.send('<h1>Hello - C00001 - Pritesh Patel</h1> ')
+})
+
+// http://localhost:3000/hello
+app.get('/hello', function (req, res) {
+    res.send('<h1>Hello Login</h1>')
+  })
+
+app.listen(SERVER_PORT ,() => {
+	console.log(`Server Running at http://localhost:${SERVER_PORT}/`)	
+}) 
+
+Step 6: create views folder and then create index.html file. Copy paste below code in index.html file
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dockefile example</title>
+</head>
+<body>
+    <h1>Welcome to NodeJS + Dockerfile example</h1>
+    <h6>Created By: C00001 - Pritesh Patel</h6>
+</body>
+</html>
+
+
+Step 7: Create file name Dockerfile and Copy paste the below code in the Dockerfile
+
+FROM node:10-alpine
+RUN mkdir -p /home/node/app/node_modules && chown -R node:node /home/node/app
+WORKDIR /home/node/app
+COPY package*.json ./
+USER node
+RUN npm install
+COPY --chown=node:node . .
+EXPOSE 3000
+CMD [ "node", "index.js" ]
+
+
+Step 8: Run below command on termial after starting docker desktop on your computer 
+docker build -t devops_node_app .
+
+docker run -d -p 4000:3000 devops_node_app
